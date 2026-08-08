@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yursway — La facturation électronique simplifiée pour les TPE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F7F6FC;
+    --bg-alt: #FFFFFF;
+    --surface: #EFEBFA;
+    --border: #E1DEF2;
+    --ink: #1D1B2E;
+    --ink-soft: #625F73;
+    --blue: #3454D1;
+    --violet: #7C3AED;
+    --violet-deep: #4C1D95;
+    --grad: linear-gradient(135deg, var(--blue) 0%, var(--violet) 100%);
+    --grad-soft: linear-gradient(135deg, rgba(52,84,209,0.10) 0%, rgba(124,58,237,0.10) 100%);
+    --check: #16A34A;
+    --radius: 18px;
+    --radius-sm: 10px;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+    --maxw: 1180px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  body{
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block; max-width:100%;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  section{position:relative;}
+
+  /* ---------- focus ---------- */
+  a:focus-visible, button:focus-visible{
+    outline:2.5px solid var(--violet);
+    outline-offset:3px;
+    border-radius:6px;
+  }
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(247,246,252,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    max-width:var(--maxw); margin:0 auto; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:20px;
+  }
+  .logo{
+    font-family:var(--serif); font-weight:700; font-size:22px; letter-spacing:-0.02em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo .dot{
+    width:9px; height:9px; border-radius:50%; background:var(--grad); display:inline-block;
+  }
+  .logo em{font-style:italic; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  nav.links{display:flex; align-items:center; gap:32px;}
+  nav.links a{
+    font-size:14.5px; font-weight:500; color:var(--ink-soft); text-decoration:none;
+  }
+  nav.links a:hover{color:var(--ink);}
+  .nav-cta{display:flex; align-items:center; gap:14px;}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    font-family:var(--sans); font-weight:600; font-size:14.5px;
+    padding:11px 20px; border-radius:100px; border:none; cursor:pointer;
+    text-decoration:none; white-space:nowrap;
+    transition:transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+  .btn-primary{
+    background:var(--grad); color:#fff;
+    box-shadow:0 10px 24px -8px rgba(76,29,149,0.55);
+  }
+  .btn-primary:hover{transform:translateY(-1px); box-shadow:0 14px 28px -8px rgba(76,29,149,0.6);}
+  .btn-ghost{
+    background:transparent; color:var(--ink); border:1.5px solid var(--border);
+  }
+  .btn-ghost:hover{border-color:var(--violet); color:var(--violet-deep);}
+  .btn-block{width:100%;}
+  .menu-btn{display:none; background:none; border:none; cursor:pointer; padding:6px;}
+
+  /* ---------- eyebrow ---------- */
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--violet-deep); background:var(--surface); border:1px solid var(--border);
+    padding:6px 14px; border-radius:100px;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{padding:88px 0 100px; overflow:hidden;}
+  .hero::before{
+    content:""; position:absolute; top:-220px; right:-160px; width:640px; height:640px;
+    background:radial-gradient(circle, rgba(124,58,237,0.20), rgba(52,84,209,0.06) 60%, transparent 72%);
+    filter:blur(10px); z-index:0; pointer-events:none;
+  }
+  .hero-grid{
+    position:relative; z-index:1;
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;
+  }
+  .hero h1{
+    font-family:var(--serif); font-weight:600; font-size:clamp(36px, 4.6vw, 58px);
+    line-height:1.06; letter-spacing:-0.02em; margin:22px 0 22px;
+  }
+  .hero h1 em{font-style:italic; font-weight:500; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .hero p.lead{
+    font-size:18px; color:var(--ink-soft); max-width:480px; margin-bottom:34px; line-height:1.6;
+  }
+  .hero-ctas{display:flex; align-items:center; gap:18px; flex-wrap:wrap;}
+  .hero-note{
+    margin-top:16px; font-size:13px; color:var(--ink-soft); font-family:var(--mono);
+  }
+
+  /* ---------- receipt (signature element) ---------- */
+  .receipt-stage{position:relative; display:flex; justify-content:center;}
+  .receipt{
+    width:300px; background:#fff; border-radius:4px;
+    box-shadow:0 30px 60px -20px rgba(29,27,46,0.28), 0 4px 16px rgba(29,27,46,0.08);
+    padding:26px 24px 30px;
+    font-family:var(--mono); font-size:13px; color:var(--ink);
+    position:relative;
+    clip-path:polygon(
+      0% 1%, 4% 0%, 8% 1%, 12% 0%, 16% 1%, 20% 0%, 24% 1%, 28% 0%, 32% 1%, 36% 0%,
+      40% 1%, 44% 0%, 48% 1%, 52% 0%, 56% 1%, 60% 0%, 64% 1%, 68% 0%, 72% 1%, 76% 0%,
+      80% 1%, 84% 0%, 88% 1%, 92% 0%, 96% 1%, 100% 0%,
+      100% 100%, 96% 99%, 92% 100%, 88% 99%, 84% 100%, 80% 99%, 76% 100%, 72% 99%,
+      68% 100%, 64% 99%, 60% 100%, 56% 99%, 52% 100%, 48% 99%, 44% 100%, 40% 99%,
+      36% 100%, 32% 99%, 28% 100%, 24% 99%, 20% 100%, 16% 99%, 12% 100%, 8% 99%, 4% 100%, 0% 99%
+    );
+    transform:rotate(-2.5deg);
+  }
+  .receipt::after{
+    content:""; position:absolute; inset:0; border-radius:4px;
+    background:linear-gradient(180deg, rgba(124,58,237,0.05), transparent 30%);
+    pointer-events:none;
+  }
+  .receipt-brand{
+    text-align:center; font-weight:600; letter-spacing:0.08em; font-size:12px;
+    text-transform:uppercase; margin-bottom:4px;
+  }
+  .receipt-sub{text-align:center; font-size:10.5px; color:var(--ink-soft); margin-bottom:16px;}
+  .receipt hr{border:none; border-top:1px dashed #C9C6DA; margin:12px 0;}
+  .receipt-line{display:flex; justify-content:space-between; gap:10px; margin-bottom:7px; font-size:12.5px;}
+  .receipt-line span:first-child{color:var(--ink-soft);}
+  .receipt-total{
+    display:flex; justify-content:space-between; font-weight:600; font-size:15px;
+    margin-top:6px;
+  }
+  .receipt-status{margin-top:16px; display:flex; flex-direction:column; gap:8px;}
+  .status-row{display:flex; align-items:center; gap:9px; font-size:11.5px; color:var(--ink-soft);}
+  .status-dot{
+    width:15px; height:15px; border-radius:50%; background:var(--check); flex:none;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .status-dot svg{width:9px; height:9px;}
+  .receipt-float{
+    position:absolute; background:#fff; border:1px solid var(--border); border-radius:12px;
+    padding:9px 13px; font-family:var(--mono); font-size:11.5px; font-weight:600;
+    box-shadow:0 12px 24px -8px rgba(29,27,46,0.18);
+    display:flex; align-items:center; gap:7px;
+  }
+  .receipt-float.f1{top:6%; left:-6%; color:var(--blue);}
+  .receipt-float.f2{bottom:10%; right:-8%; color:var(--violet-deep);}
+  .receipt-float .status-dot{width:12px; height:12px;}
+  .receipt-float .status-dot svg{width:7px; height:7px;}
+
+  /* ---------- section headers ---------- */
+  .sec-head{max-width:640px; margin-bottom:52px;}
+  .sec-head.center{margin-left:auto; margin-right:auto; text-align:center;}
+  .sec-head h2{
+    font-family:var(--serif); font-weight:600; font-size:clamp(28px, 3.2vw, 40px);
+    letter-spacing:-0.015em; margin-top:16px; line-height:1.15;
+  }
+  .sec-head p{color:var(--ink-soft); font-size:16.5px; margin-top:14px; line-height:1.6;}
+
+  /* ---------- pain points ---------- */
+  .pains{padding:104px 0; background:var(--bg-alt); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
+  .pain-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px;}
+  .pain-card{
+    background:var(--bg); border:1px solid var(--border); border-radius:var(--radius);
+    padding:28px 26px;
+  }
+  .pain-quote{
+    font-family:var(--serif); font-style:italic; font-size:19px; line-height:1.4;
+    color:var(--ink); margin-bottom:16px;
+  }
+  .pain-quote::before{content:"“"; color:var(--violet);}
+  .pain-quote::after{content:"”"; color:var(--violet);}
+  .pain-answer{display:flex; gap:10px; align-items:flex-start; font-size:14.5px; color:var(--ink-soft);}
+  .pain-answer .arrow{color:var(--violet); font-family:var(--mono); flex:none; margin-top:1px;}
+
+  /* ---------- how it works ---------- */
+  .how{padding:104px 0;}
+  .how-steps{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:0; position:relative;
+    margin-top:20px;
+  }
+  .how-steps::before{
+    content:""; position:absolute; top:29px; left:calc(100%/6); right:calc(100%/6);
+    height:1.5px; background:repeating-linear-gradient(90deg, var(--border) 0 8px, transparent 8px 16px);
+    z-index:0;
+  }
+  .how-step{position:relative; z-index:1; padding:0 20px; text-align:left;}
+  .how-step:first-child{padding-left:0;}
+  .how-step:last-child{padding-right:0;}
+  .step-num{
+    width:58px; height:58px; border-radius:50%; background:#fff; border:1.5px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:600; font-size:14px; color:var(--violet-deep);
+    margin-bottom:22px;
+  }
+  .how-step:nth-child(1) .step-num{border-color:var(--blue); color:var(--blue);}
+  .how-step:nth-child(2) .step-num{border-color:var(--violet); color:var(--violet);}
+  .how-step:nth-child(3) .step-num{background:var(--grad); border:none; color:#fff;}
+  .how-step h3{font-family:var(--serif); font-weight:600; font-size:21px; margin-bottom:10px;}
+  .how-step p{color:var(--ink-soft); font-size:15px; line-height:1.6;}
+
+  /* ---------- payments ---------- */
+  .payments{padding:64px 0; background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
+  .pay-inner{display:flex; align-items:center; justify-content:space-between; gap:40px; flex-wrap:wrap;}
+  .pay-copy h3{font-family:var(--serif); font-weight:600; font-size:22px; margin-bottom:6px;}
+  .pay-copy p{color:var(--ink-soft); font-size:14px; font-family:var(--mono); max-width:360px;}
+  .pay-icons{display:flex; gap:14px; flex-wrap:wrap;}
+  .pay-chip{
+    display:flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--border);
+    border-radius:100px; padding:10px 16px; font-size:13.5px; font-weight:600; font-family:var(--mono);
+  }
+  .pay-chip svg{width:16px; height:16px;}
+  .pay-chip.crypto{border-color:var(--violet); color:var(--violet-deep); background:var(--bg-alt);}
+
+  /* ---------- features ---------- */
+  .features{padding:104px 0;}
+  .feat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  .feat-card{
+    border:1px solid var(--border); border-radius:var(--radius); padding:26px 22px;
+    background:var(--bg-alt);
+  }
+  .feat-icon{
+    width:42px; height:42px; border-radius:12px; background:var(--grad-soft);
+    display:flex; align-items:center; justify-content:center; margin-bottom:18px;
+  }
+  .feat-icon svg{width:20px; height:20px; color:var(--violet-deep);}
+  .feat-card h3{font-family:var(--serif); font-weight:600; font-size:18px; margin-bottom:12px;}
+  .feat-card ul{list-style:none;}
+  .feat-card li{
+    font-size:13.5px; color:var(--ink-soft); padding-left:16px; position:relative; margin-bottom:8px; line-height:1.5;
+  }
+  .feat-card li::before{
+    content:"—"; position:absolute; left:0; color:var(--violet);
+  }
+
+  /* ---------- pricing ---------- */
+  .pricing{padding:104px 0; background:var(--bg-alt); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
+  .price-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  .price-card{
+    border:1.5px solid var(--border); border-radius:var(--radius); padding:28px 22px;
+    display:flex; flex-direction:column; background:var(--bg);
+  }
+  .price-card.highlight{
+    border-color:var(--violet); background:#fff;
+    box-shadow:0 20px 40px -16px rgba(76,29,149,0.28);
+    position:relative;
+  }
+  .price-badge{
+    position:absolute; top:-13px; left:50%; transform:translateX(-50%);
+    background:var(--grad); color:#fff; font-size:11px; font-weight:700;
+    padding:5px 14px; border-radius:100px; font-family:var(--mono); letter-spacing:0.03em;
+    white-space:nowrap;
+  }
+  .price-name{font-family:var(--mono); font-size:12.5px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); margin-bottom:14px;}
+  .price-amount{font-family:var(--serif); font-weight:600; font-size:34px; margin-bottom:4px;}
+  .price-amount span{font-family:var(--sans); font-weight:500; font-size:14px; color:var(--ink-soft);}
+  .price-target{font-size:13px; color:var(--ink-soft); margin-bottom:20px;}
+  .price-card ul{list-style:none; margin-bottom:24px; flex:1;}
+  .price-card li{font-size:13.5px; padding-left:18px; position:relative; margin-bottom:9px; color:var(--ink); line-height:1.5;}
+  .price-card li::before{content:"✓"; position:absolute; left:0; color:var(--check); font-weight:700; font-size:12px;}
+
+  /* ---------- compliance banner ---------- */
+  .compliance{padding:64px 0;}
+  .comp-box{
+    background:var(--grad); border-radius:var(--radius); padding:38px 40px;
+    display:flex; align-items:center; justify-content:space-between; gap:30px; flex-wrap:wrap;
+    color:#fff; position:relative; overflow:hidden;
+  }
+  .comp-box::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 85% 20%, rgba(255,255,255,0.18), transparent 55%);
+  }
+  .comp-left{position:relative; z-index:1; display:flex; align-items:flex-start; gap:16px; max-width:640px;}
+  .comp-icon{
+    width:44px; height:44px; border-radius:12px; background:rgba(255,255,255,0.18);
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .comp-icon svg{width:22px; height:22px;}
+  .comp-left h3{font-family:var(--serif); font-weight:600; font-size:20px; margin-bottom:6px;}
+  .comp-left p{font-size:14.5px; opacity:0.92; line-height:1.55;}
+  .comp-box .btn-ghost{position:relative; z-index:1; border-color:rgba(255,255,255,0.5); color:#fff; flex:none;}
+  .comp-box .btn-ghost:hover{background:rgba(255,255,255,0.14); border-color:#fff;}
+
+  /* ---------- testimonials ---------- */
+  .testimonials{padding:104px 0; background:var(--bg-alt); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
+  .test-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  .test-card{
+    border:1.5px dashed var(--border); border-radius:var(--radius); padding:30px 24px;
+    min-height:200px; display:flex; flex-direction:column; justify-content:space-between;
+    background:repeating-linear-gradient(180deg, var(--bg) 0 2px, transparent 2px 4px);
+  }
+  .test-slot-label{font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); letter-spacing:0.04em;}
+  .test-slot-title{font-family:var(--serif); font-style:italic; font-size:16px; color:var(--ink-soft); margin-top:14px; line-height:1.5;}
+  .test-foot{display:flex; align-items:center; gap:10px; margin-top:20px;}
+  .test-avatar{width:34px; height:34px; border-radius:50%; background:var(--surface); border:1px dashed var(--border);}
+  .test-name{font-size:12.5px; color:var(--ink-soft); font-family:var(--mono);}
+
+  /* ---------- final cta ---------- */
+  .final-cta{padding:110px 0 120px; text-align:center;}
+  .final-cta h2{
+    font-family:var(--serif); font-weight:600; font-size:clamp(30px, 4vw, 46px);
+    letter-spacing:-0.02em; max-width:640px; margin:0 auto 20px; line-height:1.15;
+  }
+  .final-cta p{color:var(--ink-soft); font-size:17px; margin-bottom:34px;}
+  .final-cta .hero-ctas{justify-content:center;}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--border); padding:48px 0 40px;}
+  .foot-inner{display:flex; justify-content:space-between; align-items:flex-start; gap:30px; flex-wrap:wrap;}
+  .foot-links{display:flex; gap:28px; flex-wrap:wrap;}
+  .foot-links a{font-size:13.5px; color:var(--ink-soft); text-decoration:none;}
+  .foot-links a:hover{color:var(--violet-deep);}
+  .foot-legal{font-size:12.5px; color:var(--ink-soft); margin-top:18px; font-family:var(--mono);}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    nav.links{display:none;}
+    .menu-btn{display:block;}
+    .hero-grid{grid-template-columns:1fr; gap:60px;}
+    .pain-grid{grid-template-columns:1fr;}
+    .feat-grid{grid-template-columns:repeat(2,1fr);}
+    .price-grid{grid-template-columns:repeat(2,1fr);}
+    .test-grid{grid-template-columns:1fr;}
+    .how-steps{grid-template-columns:1fr; gap:36px;}
+    .how-steps::before{display:none;}
+  }
+  @media (max-width:560px){
+    .feat-grid{grid-template-columns:1fr;}
+    .price-grid{grid-template-columns:1fr;}
+    .comp-box{flex-direction:column; align-items:flex-start;}
+    .receipt{width:100%; max-width:290px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="logo"><span class="dot"></span>Yur<em>s</em>way</div>
+    <nav class="links">
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#conformite">Conformité</a>
+      <a href="#temoignages">Témoignages</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="https://yursway-mvp.vercel.app" target="_blank" rel="noopener" class="btn btn-primary">Essai gratuit 2 mois</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Facturation électronique · TPE</span>
+      <h1>Vous encaissez.<br><em>On fait le reste.</em></h1>
+      <p class="lead">Caisse, factures conformes et comptabilité, réunis dans une seule appli. Vous touchez l'écran, Yursway s'occupe de la paperasse — et de l'administration.</p>
+      <div class="hero-ctas">
+        <a href="https://yursway-mvp.vercel.app" target="_blank" rel="noopener" class="btn btn-primary">Tester gratuitement pendant 2 mois</a>
+        <a href="#tarifs" class="btn btn-ghost">Voir les tarifs</a>
+      </div>
+      <p class="hero-note">Aucune carte bancaire requise · Support humain francophone inclus</p>
+    </div>
+
+    <div class="receipt-stage">
+      <div class="receipt-float f1">
+        <span class="status-dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        Facture F-2026-047
+      </div>
+      <div class="receipt">
+        <div class="receipt-brand">Yur<em>s</em>way</div>
+        <div class="receipt-sub">Boulangerie Dupont · Aujourd'hui</div>
+        <hr>
+        <div class="receipt-line"><span>Menu du jour</span><span>12,90 €</span></div>
+        <div class="receipt-line"><span>Café × 2</span><span>5,00 €</span></div>
+        <div class="receipt-line"><span>Dessert</span><span>4,50 €</span></div>
+        <hr>
+        <div class="receipt-total"><span>Total TTC</span><span>22,40 €</span></div>
+        <hr>
+        <div class="receipt-status">
+          <div class="status-row"><span class="status-dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Facture générée</div>
+          <div class="status-row"><span class="status-dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Envoyée au client</div>
+          <div class="status-row"><span class="status-dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Transmise via Plateforme Agréée</div>
+        </div>
+      </div>
+      <div class="receipt-float f2">
+        <span class="status-dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        Compta à jour
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pains">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Ce qu'on entend tous les jours</span>
+      <h2>Vos mots, pas ceux d'un logiciel</h2>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <p class="pain-quote">La facturation électronique, c'est du chinois.</p>
+        <div class="pain-answer"><span class="arrow">→</span>Vous n'avez rien à apprendre. On s'en occupe, en arrière-plan.</div>
+      </div>
+      <div class="pain-card">
+        <p class="pain-quote">J'ai un logiciel de caisse, un autre de facture, un autre de compta.</p>
+        <div class="pain-answer"><span class="arrow">→</span>Un seul écran. Caisse, facture et compta, au même endroit.</div>
+      </div>
+      <div class="pain-card">
+        <p class="pain-quote">Mon comptable me facture cher pour la saisie.</p>
+        <div class="pain-answer"><span class="arrow">→</span>Il reçoit des données propres, chaque mois, automatiquement.</div>
+      </div>
+      <div class="pain-card">
+        <p class="pain-quote">Je ne comprends pas la Plateforme Agréée.</p>
+        <div class="pain-answer"><span class="arrow">→</span>Vous n'avez pas à la comprendre. Elle travaille pour vous, en silence.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="comment-ca-marche">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">Le trajet d'une vente</span>
+      <h2>Trois étapes. Une seule que vous faites vraiment.</h2>
+    </div>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="step-num">01</div>
+        <h3>Encaisser</h3>
+        <p>Touchez l'écran. Espèces, carte, chèque, virement, ou cryptomonnaies : tout est accepté et converti automatiquement en euros.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">02</div>
+        <h3>La facture part seule</h3>
+        <p>Facture conforme générée et transmise via une Plateforme Agréée. Votre client la reçoit, l'administration aussi.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">03</div>
+        <h3>Votre comptable respire</h3>
+        <p>Chaque mois, un export propre part directement vers votre expert-comptable. Plus une ligne à ressaisir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="payments">
+  <div class="wrap pay-inner">
+    <div class="pay-copy">
+      <h3>Tous les moyens de paiement, y compris les cryptomonnaies</h3>
+      <p>// conversion automatique en euros à l'encaissement — aucune volatilité pour vous</p>
+    </div>
+    <div class="pay-icons">
+      <span class="pay-chip">Espèces</span>
+      <span class="pay-chip">Carte bancaire</span>
+      <span class="pay-chip">Chèque</span>
+      <span class="pay-chip">Virement</span>
+      <span class="pay-chip crypto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 8h4a2 2 0 0 1 0 4H9m0 0h4.5a2 2 0 0 1 0 4H9m0-8v8m0-8V6m0 10v2"/></svg>
+        Cryptomonnaies
+      </span>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="fonctionnalites">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Sous le capot</span>
+      <h2>Quatre modules. Une seule appli.</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h3>Caisse</h3>
+        <ul>
+          <li>Encaissement multi-moyens, cryptos incluses</li>
+          <li>Ticket Z quotidien</li>
+          <li>Gestion du fonds de caisse</li>
+        </ul>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <h3>Facturation</h3>
+        <ul>
+          <li>Devis transformables en factures</li>
+          <li>Formats conformes (Factur-X, UBL, CII)</li>
+          <li>Échéances et relances automatiques</li>
+        </ul>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <h3>Comptabilité</h3>
+        <ul>
+          <li>Journal des ventes automatique</li>
+          <li>Scan des tickets de dépenses</li>
+          <li>Export FEC pour votre comptable</li>
+        </ul>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6z"/></svg></div>
+        <h3>Conformité</h3>
+        <ul>
+          <li>Archivage électronique sécurisé (10 ans)</li>
+          <li>Piste d'audit fiable</li>
+          <li>Mises à jour réglementaires automatiques</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="tarifs">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">Tarifs</span>
+      <h2>Un prix qui suit votre activité, pas l'inverse</h2>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-name">Starter</div>
+        <div class="price-amount">Gratuit</div>
+        <div class="price-target">Auto-entrepreneur, pour tester</div>
+        <ul>
+          <li>5 factures / mois</li>
+          <li>Module caisse</li>
+          <li>Sans engagement</li>
+        </ul>
+        <a href="https://yursway-mvp.vercel.app" target="_blank" rel="noopener" class="btn btn-ghost btn-block">Commencer</a>
+      </div>
+      <div class="price-card highlight">
+        <span class="price-badge">Le plus choisi</span>
+        <div class="price-name">Essentiel</div>
+        <div class="price-amount">9,90 € <span>HT / mois</span></div>
+        <div class="price-target">TPE, 0 salarié</div>
+        <ul>
+          <li>Facturation illimitée</li>
+          <li>Plateforme Agréée incluse</li>
+          <li>Caisse + paiements cryptos</li>
+        </ul>
+        <a href="https://yursway-mvp.vercel.app" target="_blank" rel="noopener" class="btn btn-primary btn-block">Essai gratuit</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Pro</div>
+        <div class="price-amount">19,90 € <span>HT / mois</span></div>
+        <div class="price-target">TPE, 1 à 9 salariés</div>
+        <ul>
+          <li>Multi-utilisateur</li>
+          <li>Gestion de stock</li>
+          <li>Exports comptables avancés</li>
+        </ul>
+        <a href="https://yursway-mvp.vercel.app" target="_blank" rel="noopener" class="btn btn-ghost btn-block">Essai gratuit</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Compta</div>
+        <div class="price-amount">39,90 € <span>HT / mois</span></div>
+        <div class="price-target">TPE, 10 à 19 salariés</div>
+        <ul>
+          <li>Tableaux de bord avancés</li>
+          <li>API expert-comptable</li>
+          <li>Support prioritaire</li>
+        </ul>
+        <a href="https://yursway-mvp.vercel.app" target="_blank" rel="noopener" class="btn btn-ghost btn-block">Essai gratuit</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="compliance" id="conformite">
+  <div class="wrap">
+    <div class="comp-box">
+      <div class="comp-left">
+        <div class="comp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 2 4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+        <div>
+          <h3>Conforme à la réforme, sans que vous ayez à vous en soucier</h3>
+          <p>Vos factures et vos données de vente transitent via une Plateforme Agréée immatriculée par la DGFiP. Réception obligatoire dès septembre 2026 pour toutes les entreprises, émission progressive selon votre taille.</p>
+        </div>
+      </div>
+      <a href="#" class="btn btn-ghost">En savoir plus</a>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials" id="temoignages">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">Sur le terrain</span>
+      <h2>Nos premiers testeurs racontent</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card">
+        <span class="test-slot-label">// emplacement réservé</span>
+        <p class="test-slot-title">Bientôt ici : l'avis de nos premiers commerçants testeurs.</p>
+        <div class="test-foot"><div class="test-avatar"></div><span class="test-name">À venir</span></div>
+      </div>
+      <div class="test-card">
+        <span class="test-slot-label">// emplacement réservé</span>
+        <p class="test-slot-title">Bientôt ici : l'avis de nos premiers commerçants testeurs.</p>
+        <div class="test-foot"><div class="test-avatar"></div><span class="test-name">À venir</span></div>
+      </div>
+      <div class="test-card">
+        <span class="test-slot-label">// emplacement réservé</span>
+        <p class="test-slot-title">Bientôt ici : l'avis de nos premiers commerçants testeurs.</p>
+        <div class="test-foot"><div class="test-avatar"></div><span class="test-name">À venir</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta" id="cta">
+  <div class="wrap">
+    <span class="eyebrow">Prêt à essayer ?</span>
+    <h2>Deux mois, gratuits, sans carte bancaire.<br>On s'occupe du reste.</h2>
+    <p>Rejoignez les commerçants qui testent Yursway avant tout le monde.</p>
+    <div class="hero-ctas">
+      <a href="https://yursway-mvp.vercel.app" target="_blank" rel="noopener" class="btn btn-primary">Tester gratuitement pendant 2 mois</a>
+      <a href="#" class="btn btn-ghost">Parler à un conseiller</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div>
+      <div class="logo"><span class="dot"></span>Yur<em>s</em>way</div>
+      <p class="foot-legal">Yursway — La facturation électronique simplifiée pour les TPE.</p>
+    </div>
+    <div class="foot-links">
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#conformite">Conformité</a>
+      <a href="#temoignages">Témoignages</a>
+      <a href="https://yursway-mvp.vercel.app" target="_blank" rel="noopener">Essai gratuit</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll, respects reduced motion
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const els = document.querySelectorAll('.pain-card, .how-step, .feat-card, .price-card, .test-card');
+    els.forEach(el=>{ el.style.opacity='0'; el.style.transform='translateY(14px)'; el.style.transition='opacity 0.5s ease, transform 0.5s ease'; });
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.style.opacity='1';
+          e.target.style.transform='translateY(0)';
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold:0.12 });
+    els.forEach(el=>io.observe(el));
+  }
+</script>
+
+</body>
+</html>
